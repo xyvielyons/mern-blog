@@ -1,10 +1,11 @@
-export default (error, req, res, next) => {
-    error.statusCode = error.statusCode || 500
-    error.status = error.status || "error"
-    res.status(error.statusCode).json({
-        status:error.statusCode,
-        message:error.message,
-        stacktrace:error.stack,
-        error:error
-    })
-} 
+export const globalErrorHandler = (err, req, res, next) => {
+    err.statusCode = err.statusCode || 500
+    err.status = err.status || "error"
+    res.status(err.statusCode).send({ 
+        error: err,
+        status:err.statusCode,
+        message:err.message,
+        stacktrace:err.stack
+        
+    });
+}

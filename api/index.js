@@ -3,9 +3,9 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
-import customError from "./Utils/CustomError.js"
 import userRoutes from "./routes/user.route.js"
 import authRoutes from "./routes/auth.route.js"
+import { globalErrorHandler } from "./controllers/errorController.js";
 dotenv.config()
 process.on("uncaughtException",(err)=>{
     console.log(err.message)
@@ -32,25 +32,8 @@ mongoose.connect(process.env.CONN_STR,{
 
 app.use("/api/user",userRoutes)
 app.use("/api/auth",authRoutes)
-app.use((error, req, res, next) => {
-    error.statusCode = error.statusCode || 500
-    error.status = error.status || "error"
 
-    res.status(error.statusCode).json({
-        status :error.statusCode,
-        message :error.message,
-        stacktrace:error.stack,
-        error:error
-    })
-} )
-
-
-app.all("*",(req,res,next)=>{
-const err = new customError(`cant find ${req.originalUrl}`,404)
-next(err)
-        
-
-})
+app.use(globalErrorHandler)//global error handler
 
 
 
