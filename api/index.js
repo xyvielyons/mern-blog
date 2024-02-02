@@ -3,7 +3,7 @@ import bodyParser from "body-parser"
 import cors from "cors"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
-
+import userRoutes from "./routes/user.route.js"
 
 dotenv.config()
 process.on("uncaughtException",(err)=>{
@@ -27,4 +27,7 @@ mongoose.connect(process.env.CONN_STR,{
     useUnifiedTopology:true
 })
 .then(()=>app.listen(PORT,()=>console.log(`db connectio successful server running at port: ${PORT}`)))
+
+app.use("/api/user",userRoutes)
+
 
