@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
 import { Label, TextInput,Button,Alert, Spinner } from 'flowbite-react'
-import {Link} from "react-router-dom"
+import {Link,useNavigate} from "react-router-dom"
 import authFetch from '../axios/custom';
 export default function Signup() {
   const [formData,setFormData]=useState({});
   const [errorMessage,setErrorMessage]=useState(null);
   const [loading,setLoading]= useState(false)
-
+  const navigate = useNavigate();
 const handlechange = (e)=>{
   
   setFormData({...formData, [e.target.id]: e.target.value.trim()})
@@ -26,13 +26,17 @@ const handleSubmit = async (e)=>{
     console.log(res)
     if(res.data.status=== "success"){
       setErrorMessage(res.data.message)
+      navigate("/sign-in")
       
     }
+    
     setLoading(false)
   }catch(error){
     setErrorMessage(error.message)
     setLoading(false)
   }
+
+  
 
 }
 

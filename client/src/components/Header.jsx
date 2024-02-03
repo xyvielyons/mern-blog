@@ -1,5 +1,4 @@
 import React from 'react'
-import {Outlet} from "react-router-dom"
 import {Navbar,TextInput,Button} from "flowbite-react"
 import { Link ,useLocation} from 'react-router-dom'
 import {FaMoon} from "react-icons/fa"
@@ -66,9 +65,11 @@ export default function Header() {
         </Navbar.Collapse>
 
     </Navbar>
-    <Outlet></Outlet>
+    
+    
     
     </>
+    
    
   )
 }
