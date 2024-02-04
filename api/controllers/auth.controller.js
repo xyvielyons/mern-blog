@@ -57,7 +57,7 @@ export const signin = async(req,res,next) => {
                 httpOnly:true
             }).json({
                 message:"signin successful",
-                user:validUser
+                user:rest
             })
 
 
