@@ -2,11 +2,15 @@ import React,{useState} from 'react'
 import { Label, TextInput,Button,Alert, Spinner } from 'flowbite-react'
 import {Link,useNavigate} from "react-router-dom"
 import authFetch from '../axios/custom';
+import {useDispatch,useSelector} from "react-redux"
+import {signInStart,signInSuccess,signInFailure} from "../redux/user/userSlice"
+
 export default function Signin() {
   const [formData,setFormData]=useState({});
-  const [errorMessage,setErrorMessage]=useState(null);
-  const [loading,setLoading]= useState(false)
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {loading,error:errorMessage} = useSelector(state=>state.user)
+ 
 const handlechange = (e)=>{
   
   setFormData({...formData, [e.target.id]: e.target.value.trim()})
@@ -16,24 +20,28 @@ const handlechange = (e)=>{
 const handleSubmit = async (e)=>{
   e.preventDefault()
   if(!formData.email || !formData.password){
-    return setErrorMessage("please fill out all fields")
+    return dispatch(signInFailure("please fill all the fields"))
   }
   try{
     
-    setLoading(true)
-    setErrorMessage(null)
+    // setLoading(true)
+    // setErrorMessage(null)
+    dispatch(signInStart)
     const res = await authFetch.post("/auth/signin",formData);
     console.log(res)
     if(res.data.status=== "success"){
-      setErrorMessage(res.data.message)
+      // setErrorMessage(res.data.message)
+      dispatch(signInSuccess(res.data.user))
       navigate("/")
+     
       
     }
     
-    setLoading(false)
+    
   }catch(error){
-    setErrorMessage(error.message)
-    setLoading(false)
+    // setErrorMessage(error.message)
+    // setLoading(false)
+    dispatch(signInFailure(error.message))
   }
 
   
@@ -64,7 +72,7 @@ const handleSubmit = async (e)=>{
             </div>
             <div className=''>
             <Label value="your password"/>
-            <TextInput type="password" placeholder='Password' id='password' onChange={handlechange} placeholder="************"></TextInput>
+            <TextInput type="password"  id='password' onChange={handlechange} placeholder="************"></TextInput>
             </div>
             <Button gradientDuoTone="purpleToPink" type="submit" className='mt-5' disabled={loading}>
               {
