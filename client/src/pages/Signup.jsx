@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { Label, TextInput,Button,Alert, Spinner } from 'flowbite-react'
 import {Link,useNavigate} from "react-router-dom"
 import authFetch from '../axios/custom';
+import OAuth from '../components/OAuth';
 export default function Signup() {
   const [formData,setFormData]=useState({});
   const [errorMessage,setErrorMessage]=useState(null);
@@ -85,6 +86,7 @@ const handleSubmit = async (e)=>{
             <span>Have an Account?</span>
             <Link to="/sign-in" className='text-blue-500'>Sign In</Link>
           </div>
+          <OAuth></OAuth>
           
           {
             errorMessage && 
