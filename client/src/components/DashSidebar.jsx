@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState,} from 'react'
 import {Sidebar} from "flowbite-react"
 import {useLocation} from 'react-router-dom'
 import {HiUser,HiArrowSmRight} from "react-icons/hi"
@@ -10,6 +10,7 @@ export default function DashSidebar() {
   useEffect(()=>{
     const urlParams = new URLSearchParams(location.search)
     const tabFromUrl = urlParams.get('tap')
+    
     console.log(tabFromUrl,urlParams,location)
     if(tabFromUrl){
       setTab(tabFromUrl)
@@ -21,7 +22,7 @@ export default function DashSidebar() {
         <Sidebar.Items>
             <Sidebar.ItemGroup>
                 <Link to="/dashboard?tap=profile">
-                <Sidebar.Item active={tab==="profile"} icon={HiUser} label={"User"} labelColor="dark">
+                <Sidebar.Item active={tab==="profile"} icon={HiUser} label={"User"} labelColor="dark" as="div">
                   Profile
                 </Sidebar.Item>
                 </Link>
