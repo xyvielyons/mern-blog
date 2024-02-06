@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser"
 import cors from "cors"
 import mongoose from "mongoose"
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv"
 import userRoutes from "./routes/user.route.js"
 import authRoutes from "./routes/auth.route.js"
@@ -18,7 +19,7 @@ const app = express();//running express js
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
 app.use(cors())//cross origin 
-
+app.use(cookieParser())//extract cookie from browser
 
 
 const PORT = process.env.PORT

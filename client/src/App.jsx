@@ -15,6 +15,7 @@ export default function App() {
   return (
     <BrowserRouter>
     <Routes>
+    
       <Route element={<Layout></Layout>}>
       
       <Route path="/" element={<Home></Home>}></Route>
@@ -28,9 +29,11 @@ export default function App() {
 
      
       </Route>
+
   
 
     </Routes>
+
     
     </BrowserRouter>
   )

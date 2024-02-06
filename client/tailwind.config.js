@@ -7,7 +7,11 @@ export default {
     
   ],
   theme: {
-    extend: {},
+    
+    
+    extend: {
+     
+    },
   },
   plugins: [require('flowbite/plugin')],
 }
