@@ -75,7 +75,7 @@ const handleSubmit = async (e)=>{
             <Label value="your password"/>
             <TextInput type="password"  id='password' onChange={handlechange} placeholder="************"></TextInput>
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit" className='mt-5' disabled={loading}>
+            <Button gradientDuoTone="purpleToPink" type="submit" className='mt-5' >
               {
                 loading ? 
                   <>

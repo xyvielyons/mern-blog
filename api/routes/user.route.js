@@ -7,5 +7,8 @@ router.route('/test')
 .get(test)
 router.route('/update/:userId')
 .put(verifyToken,updateUser)
+router.route("/refresh")
+.get(verifyToken)
+
 
 export default router

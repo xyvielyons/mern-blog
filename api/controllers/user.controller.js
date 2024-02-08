@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 import User from "../models/user.model.js"
 import { errorHandler } from "../Utils/CustomError.js"
 export const test = (req,res)=>{
@@ -56,6 +57,12 @@ export const updateUser = async(req,res,next) =>{
             user:rest
         })
      }catch(error){
-        next(error)
-    }
+        res.status(404).json({
+            status:"fail",
+            message:error
+            
+        })
+
+        
+     }
 }

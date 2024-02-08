@@ -2,11 +2,33 @@ import React, { useEffect,useState } from 'react'
 import {useLocation} from 'react-router-dom'
 import DashSidebar from '../components/DashSidebar'
 import DashProfile from '../components/DashProfile'
+import authFetch from '../axios/custom'
+import { useNavigate } from 'react-router-dom'
 export default function Dashboard() {
   const [tab ,setTab] = useState("")
   const location = useLocation()
+ const navigate = useNavigate()
+
+//  useEffect(()=>{
+//   const verify = async ()=>{
+//     try{
+//       const res = await authFetch.get("/user/refresh")
+//     if(!res.data.valid){
+//       return navigate("/sign-in")
+//     }
+
+//     }catch(err){
+//       //console.log(err)
+
+//     }
+    
+//   }
+//  verify()
+//  })
 
   useEffect(()=>{
+      
+    
     const urlParams = new URLSearchParams(location.search)
     const tabFromUrl = urlParams.get('tap')
     console.log(tabFromUrl,urlParams,location)
