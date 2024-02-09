@@ -4,6 +4,7 @@ import DashSidebar from '../components/DashSidebar'
 import DashProfile from '../components/DashProfile'
 import authFetch from '../axios/custom'
 import { useNavigate } from 'react-router-dom'
+import { DashPosts } from '../components/DashPosts'
 export default function Dashboard() {
   const [tab ,setTab] = useState("")
   const location = useLocation()
@@ -47,7 +48,7 @@ export default function Dashboard() {
       </div>
 
       {tab==="profile" && <DashProfile></DashProfile>}
-
+      {tab==="posts" && <DashPosts></DashPosts>}
 
     </div>
   )
