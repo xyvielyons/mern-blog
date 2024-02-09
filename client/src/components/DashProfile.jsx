@@ -5,7 +5,7 @@ import {ref,getStorage, uploadBytesResumable, getDownloadURL} from "firebase/sto
 import {app} from "../firebase/firebase.js"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart,updateSuccess,updateFailure,deleteUserSuccess,deleteUserStart,deleteUserFailure} from '../redux/user/userSlice.js'
+import { updateStart,updateSuccess,updateFailure,deleteUserSuccess,deleteUserStart,deleteUserFailure,signOutSuccess} from '../redux/user/userSlice.js'
 import authFetch from '../axios/custom.js'
 import {useNavigate} from "react-router-dom"
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
@@ -127,6 +127,21 @@ try{
     dispatch(deleteUserFailure(err.message))
 }
 }
+
+const handleSignOut = async ()=>{
+    try{
+        const res = await authFetch.post('/user/signout',{})
+        if(!res){
+            console.log(res)
+        }else{
+            dispatch(signOutSuccess())
+        }
+
+    }catch(err){
+        console.log(err.message)
+    }
+
+}
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
         <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
@@ -168,7 +183,7 @@ try{
             <Button type='submit' gradientDuoTone="purpleToBlue">update</Button>
             <div className="text-red-500 flex justify-between mt-5">
                 <span onClick={()=>{setShowModal(true)}} className='cursor-pointer'>Delete Account</span>
-                <span className='cursor-pointer'>Sign Out</span>
+                <span className='cursor-pointer' onClick={handleSignOut}>Sign Out</span>
             </div>
             {
                 updateUserSuccess && <Alert
