@@ -6,5 +6,6 @@ const authFetch = axios.create({
     headers:{
         Accept:"application/json"
     },
+    
 })
 export default authFetch

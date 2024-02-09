@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard"
 import Header from "./components/Header"
 import Layout from './components/Layout'
 import { PrivateRoute } from './components/PrivateRoute'
+import { ProtectedRoutes } from './components/ProtectedRoutes'
 export default function App() {
   
 
@@ -18,18 +19,28 @@ export default function App() {
     <Routes>
     
       <Route element={<Layout></Layout>}>
-      
-      <Route path="/" element={<Home></Home>}></Route>
-      <Route path="/about" element={<About></About>}></Route>
-      <Route path="/projects" element={<Projects></Projects>}></Route>
-      <Route path="/sign-in" element={<Signin></Signin>}></Route>
-      <Route path="/sign-up" element={<Signup></Signup>}></Route>
-              <Route element={<PrivateRoute/>}>
-                  <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
-              </Route>
+          <Route path="/sign-in" element={<Signin></Signin>}></Route>
+          <Route path="/sign-up" element={<Signup></Signup>}></Route>
+              
+               <Route path="/" element={<ProtectedRoutes></ProtectedRoutes>}>
+                  <Route path="/" element={<Home></Home>}></Route>
+                      <Route path="/about" element={<About></About>}></Route>
+                      <Route path="/projects" element={<Projects></Projects>}></Route>
+                      
+                              <Route element={<PrivateRoute/>}>
+                                  <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
+                              </Route>
+
+
+               </Route>
+
+
+
+                 
+                
+      </Route>
 
      
-      </Route>
 
   
 
