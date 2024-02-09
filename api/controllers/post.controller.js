@@ -21,6 +21,10 @@ export const create = async(req,res,next)=>{
         })
 
     }catch(err){
+        res.status(400).json({
+            status:"fail",
+            message:err
+        })
         next(err)
     }
 
