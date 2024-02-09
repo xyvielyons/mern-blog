@@ -7,6 +7,7 @@ import dotenv from "dotenv"
 import userRoutes from "./routes/user.route.js"
 import authRoutes from "./routes/auth.route.js"
 import { globalErrorHandler } from "./controllers/errorController.js";
+import postRoutes from "./routes/post.route.js"
 dotenv.config()
 process.on("uncaughtException",(err)=>{
     console.log(err.message)
@@ -33,6 +34,7 @@ mongoose.connect(process.env.CONN_STR,{
 
 app.use("/api/user",userRoutes)
 app.use("/api/auth",authRoutes)
+app.use("/api/post",postRoutes)
 
 app.use(globalErrorHandler)//global error handler
 
