@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture:{
       type:String,
-      default:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw0NFvRsQ52_g8DZ1oCNnIcC&ust=1707176217719000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCNjcu5ntkoQDFQAAAAAdAAAAABAE"
+      default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk2mpwyMPUXsU5jXlBBN-WJVhkjS5c8KJuX4ltBhaUZM_hjLL0GYtywvbeHVAI6hFn5aw&usqp=CAU"
     },
     refreshToken:{type:[String]},
     isAdmin:{

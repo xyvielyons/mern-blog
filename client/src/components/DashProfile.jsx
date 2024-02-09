@@ -7,7 +7,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updateStart,updateSuccess,updateFailure,deleteUserSuccess,deleteUserStart,deleteUserFailure,signOutSuccess} from '../redux/user/userSlice.js'
 import authFetch from '../axios/custom.js'
-import {useNavigate} from "react-router-dom"
+import {useNavigate,Link} from "react-router-dom"
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 export default function DashProfile() {
     const filePickerRef = useRef()
@@ -15,7 +15,7 @@ export default function DashProfile() {
     const [updateUserSuccess,setUpdateUserSuccess] = useState(null)
     const dispatch = useDispatch()
     const [showModal,setShowModal] = useState(false)
-    const {currentUser,error} = useSelector(state=>state.user)
+    const {currentUser,error,loading} = useSelector(state=>state.user)
     const [imageFile,setImageFile] = useState(null)
     const [imageFileUrl,setImageFileUrl] = useState(null)
     const [imageFileUploadingProgress,setImageUploadingProgress] = useState(null)
@@ -60,12 +60,15 @@ export default function DashProfile() {
             setImageFile(null)
             setImageFileUrl(null)
             setImageFileUploading(false)
+            console.log(error)
         },
         ()=>{
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
                 setImageFileUrl(downloadURL)
+                console.log(downloadURL)
                 setFormData({...formData,profilePicture:downloadURL})
                 setImageFileUploading(false)
+                
             })
         }
     }
@@ -82,6 +85,7 @@ const handleChange = (e)=>{
 
 const handleSubmit = async(e)=>{
     e.preventDefault();
+    console.log(formData)
     setUpdateUserError(null)
     setUpdateUserSuccess(null)
     if(imageFileUploading){
@@ -164,7 +168,7 @@ const handleSignOut = async ()=>{
                     path:{
                         stroke:`rgba(62,152,199 ,${
                             imageFileUploadingProgress/100
-                        })`
+                        })`,
                     }
                 }}/>
                 }
@@ -180,7 +184,19 @@ const handleSignOut = async ()=>{
             <TextInput id="username" type='text'  placeholder='username' defaultValue={currentUser.username} onChange={handleChange}></TextInput>
             <TextInput id="email" type='email'  placeholder='email'defaultValue={currentUser.email} onChange={handleChange}></TextInput>
             <TextInput id="password" type='password'  placeholder='password' onChange={handleChange}></TextInput>
-            <Button type='submit' gradientDuoTone="purpleToBlue">update</Button>
+            <Button type='submit' gradientDuoTone="purpleToBlue" outline disabled={loading || imageFileUploading}>{loading ? "loading...":"update"}</Button>
+
+            {
+                currentUser.isAdmin &&
+                <Link to={'/create-post'}>
+                    <Button
+                    type="button"
+                    gradientDuoTone="purpleToPink"
+                    className='w-full'
+                    >Create a post</Button>
+                </Link> 
+                
+            }
             <div className="text-red-500 flex justify-between mt-5">
                 <span onClick={()=>{setShowModal(true)}} className='cursor-pointer'>Delete Account</span>
                 <span className='cursor-pointer' onClick={handleSignOut}>Sign Out</span>

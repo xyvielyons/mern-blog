@@ -10,6 +10,8 @@ import Header from "./components/Header"
 import Layout from './components/Layout'
 import { PrivateRoute } from './components/PrivateRoute'
 import { ProtectedRoutes } from './components/ProtectedRoutes'
+import { OnlyAdminPrivateRoute } from './components/OnlyAdminPrivateRoute'
+import { CreatePost } from './pages/CreatePost'
 export default function App() {
   
 
@@ -30,9 +32,13 @@ export default function App() {
                               <Route element={<PrivateRoute/>}>
                                   <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
                               </Route>
+                              <Route element={<OnlyAdminPrivateRoute/>}>
+                                  <Route path="/create-post" element={<CreatePost></CreatePost>}></Route>
+                              </Route>
 
 
                </Route>
+               
 
 
 
