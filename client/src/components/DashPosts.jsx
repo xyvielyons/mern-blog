@@ -37,7 +37,7 @@ if(currentUser.isAdmin){
     try{
       const res = await authFetch.get(`/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`)
       setUserPosts((prev)=>[...prev,...res.data.posts])
-      if(data.posts.legth < 9){
+      if(data.posts.length < 9){
         setShowMore(false)
       }
 
