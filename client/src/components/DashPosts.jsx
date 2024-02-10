@@ -7,6 +7,7 @@ import {Link} from "react-router-dom"
 export const DashPosts = () => {
   const {currentUser} = useSelector((state)=>state.user)
   const [userPosts,setUserPosts] = useState([])
+  const [showMore,setShowMore] = useState(true)
   console.log(userPosts);
   useEffect(()=>{
      const fetchPosts = async ()=>{
@@ -14,6 +15,9 @@ export const DashPosts = () => {
         const res = await authFetch.get(`/post/getPosts?userId=${currentUser._id}`)
         if(res.data.status == "success"){
           setUserPosts(res.data.posts)
+          if(res.data.posts.length < 9){
+            setShowMore(false)
+          }
         }
 
       }catch(err){
@@ -26,6 +30,21 @@ if(currentUser.isAdmin){
 }
 
   },[currentUser._id])
+
+
+  const handleShowMore = async ()=>{
+    const startIndex = userPosts.length;
+    try{
+      const res = await authFetch.get(`/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`)
+      setUserPosts((prev)=>[...prev,...res.data.posts])
+      if(data.posts.legth < 9){
+        setShowMore(false)
+      }
+
+    }catch(error){
+      console.log(error)
+    }
+  }
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
       {currentUser.isAdmin && userPosts.length > 0 ? 
@@ -84,6 +103,9 @@ if(currentUser.isAdmin){
 
 
       </Table>
+      {
+        showMore && <button onClick={handleShowMore} className='w-full text-sm py-7 text-teal-500 self-center'>Show More</button>
+      }
       
       </>
       :
