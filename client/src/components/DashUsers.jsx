@@ -57,12 +57,12 @@ if(currentUser.isAdmin){
 
   const handleDeleteUser = async()=>{
     setShowModal(false)
-    // try{
-    //   const res = await authFetch.delete(`/user/deleteuser/${postIdToDelete}/${currentUser._id}`)
-    //   setUserPosts((prev)=> prev.filter((post) => post._id !== postIdToDelete)) 
-    // }catch(err){
-    //   console.log(err)
-    // }
+    try{
+      const res = await authFetch.delete(`/user/delete/${userIdToDelete}`)
+      setUser((prev)=> prev.filter((user) => user._id !== userIdToDelete)) 
+    }catch(err){
+      console.log(err)
+    }
 
   }
   return (

@@ -15,4 +15,5 @@ router.route("/signout")
 .post(signOut)
 router.route("/getusers")
 .get(verifyToken,getUsers)
+
 export default router
