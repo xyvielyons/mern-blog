@@ -13,6 +13,7 @@ import { ProtectedRoutes } from './components/ProtectedRoutes'
 import { OnlyAdminPrivateRoute } from './components/OnlyAdminPrivateRoute'
 import { CreatePost } from './pages/CreatePost'
 import { UpdatePost } from './pages/UpdatePost'
+import PostPage from './pages/PostPage'
 export default function App() {
   
 
@@ -25,10 +26,10 @@ export default function App() {
           <Route path="/sign-in" element={<Signin></Signin>}></Route>
           <Route path="/sign-up" element={<Signup></Signup>}></Route>
               
-               <Route path="/" element={<ProtectedRoutes></ProtectedRoutes>}>
                   <Route path="/" element={<Home></Home>}></Route>
                       <Route path="/about" element={<About></About>}></Route>
                       <Route path="/projects" element={<Projects></Projects>}></Route>
+                      <Route path="/post/:postSlug" element={<PostPage></PostPage>}></Route>
                       
                               <Route element={<PrivateRoute/>}>
                                   <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
@@ -36,7 +37,7 @@ export default function App() {
                               <Route element={<OnlyAdminPrivateRoute/>}>
                                   <Route path="/create-post" element={<CreatePost></CreatePost>}></Route>
                                   <Route path="/update-post/:postId" element={<UpdatePost></UpdatePost>}></Route>
-                              </Route>
+                              
 
 
                </Route>
