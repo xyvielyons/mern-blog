@@ -1,5 +1,5 @@
 import express  from "express";
-import {test,updateUser,deleteUser,signOut,getUsers} from '../controllers/user.controller.js'
+import {test,updateUser,deleteUser,signOut,getUsers,getUser} from '../controllers/user.controller.js'
 import { verifyToken } from "../Utils/VerifyUser.js";
 const router = express.Router()
 
@@ -15,5 +15,7 @@ router.route("/signout")
 .post(signOut)
 router.route("/getusers")
 .get(verifyToken,getUsers)
+router.route("/getuser/:userId")
+.get(getUser)
 
 export default router
