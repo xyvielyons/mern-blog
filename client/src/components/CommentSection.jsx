@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import {Alert, Button, Textarea} from "flowbite-react"
 import authFetch from "./../axios/custom.js"
 import Comment from './Comment.jsx'
@@ -9,6 +9,10 @@ const {currentUser} = useSelector(state => state.user)
 const [comment,setComment] = useState('')
 const [commentError,setCommentError] = useState(null)
 const [comments,setComments] = useState([])
+const navigate = useNavigate()
+
+
+
 console.log(comments)
 const handleSubmit = async (e) => {
 e.preventDefault();
@@ -48,7 +52,29 @@ getComments();
 },[postId])
 
 
+const handleLike = async (commentId)=>{
+  try {
+    if(!currentUser){
+      navigate('/sign-in')
+      return;
+    }
+    const res = await authFetch.put(`/comment/likeComment/${commentId}`)
+    if(res.data.status == "success"){
+      setComments(comments.map((comment)=>{
+        comment._id === commentId ? {
+          ...comment,
+          likes:res.data.comments.likes,
+          numberOfLikes:res.data.comments.likes.length
+        }:comments
+      }))
+    }
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
 
+}
   return (
     <div className='max-w-2xl max-auto w-full p-3'>
          {currentUser ? 
@@ -97,6 +123,7 @@ getComments();
             <Comment
             key={comment._id}
             comment={comment}
+            onLike={handleLike}
             />
             )}
         </>
