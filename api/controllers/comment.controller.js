@@ -45,7 +45,7 @@ export const likeComment = async (req,res,next)=>{
 
         }
 
-        const userIndex = comment.likes.indexOf(req.user.id)
+        const userIndex = comment.likes.indexOf(req.user.id)//look if the id is in the array of the likes if not available it returns -1
         if(userIndex === -1){
             comment.numberOfLikes += 1
             comment.likes.push(req.user.id)
@@ -60,6 +60,35 @@ export const likeComment = async (req,res,next)=>{
             comment
         })
     } catch (error) {
+        next(error)
+        
+    }
+}
+
+export const editComment = async(req,res,next)=>{
+    try {
+        const comment = await Comment.findById(req.params.commentId);
+        if(!comment){
+            return next(errorHandler("comment not found",404))
+        }
+        if (comment.userId != req.user.id && !req.user.isAdmin){
+            return next(errorHandler("you are not allowed to edit this comment",403))
+        }
+        
+
+        const editedComment = await Comment.findByIdAndUpdate(
+            req.params.commentId,
+            {
+                content:req.body.content
+            },
+            {new:true}
+        )
+        res.status(200).json({
+            status:"success",
+            editedComment
+        })
+    } catch (error) {
+        console.log(error);
         next(error)
         
     }

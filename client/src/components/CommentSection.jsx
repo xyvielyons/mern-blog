@@ -4,6 +4,9 @@ import { Link ,useNavigate} from 'react-router-dom'
 import {Alert, Button, Textarea} from "flowbite-react"
 import authFetch from "./../axios/custom.js"
 import Comment from './Comment.jsx'
+
+
+
 export const CommentSection = ({postId}) => {
 const {currentUser} = useSelector(state => state.user)
 const [comment,setComment] = useState('')
@@ -28,7 +31,7 @@ try {
   }
   
 } catch (error) {
-setCommentError(error.message)
+setCommentError(error)
   
 }
 }
@@ -39,8 +42,9 @@ useEffect(()=>{
       const res = await authFetch(`/comment/getPostComments/${postId}`)
       if(res.data.status == "success"){
         setComment('')
-      setComments(...comments,res.data.comments)
+        setComments(res.data.comments,...comments)
       }
+      //setComments([res.data.comments,...comments])
 
     }catch(err){
       console.log(err)
@@ -63,9 +67,9 @@ const handleLike = async (commentId)=>{
       setComments(comments.map((comment)=>{
         comment._id === commentId ? {
           ...comment,
-          likes:res.data.comments.likes,
-          numberOfLikes:res.data.comments.likes.length
-        }:comments
+          likes:res.data.comment.likes,
+          numberOfLikes:res.data.comment.likes.length
+        }:comment
       }))
     }
     
@@ -74,6 +78,13 @@ const handleLike = async (commentId)=>{
     
   }
 
+}
+const handleEdit = async(comment,editedContent)=>{
+  setComments(
+    comments.map((c)=>{
+     c._id === comment._id ? {...c,content:editedContent} : c
+    })
+  )
 }
   return (
     <div className='max-w-2xl max-auto w-full p-3'>
@@ -119,12 +130,13 @@ const handleLike = async (commentId)=>{
           </div>
           
           </div>
-          {comments.map(comment => 
+          {comments.map(comment => (
             <Comment
             key={comment._id}
             comment={comment}
             onLike={handleLike}
-            />
+            onEdit={handleEdit}
+            />)
             )}
         </>
        }
