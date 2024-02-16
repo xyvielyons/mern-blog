@@ -1,7 +1,7 @@
 import express from 'express'
 import { verifyToken } from "../Utils/VerifyUser.js";
 
-import { createComment,editComment,deleteComment,getPostComments,likeComment } from '../controllers/comment.controller.js';
+import { getComments,createComment,editComment,deleteComment,getPostComments,likeComment } from '../controllers/comment.controller.js';
 const router = express.Router();
 
 
@@ -17,6 +17,7 @@ router.route('/editComment/:commentId')
 .put(verifyToken,editComment)
 router.route('/deleteComment/:commentId')
 .delete(verifyToken,deleteComment)
-
+router.route('/getComments')
+.get(verifyToken,getComments)
 
 export default router

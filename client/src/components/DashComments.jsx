@@ -9,21 +9,21 @@ import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import {FaCheck,FaTimes} from "react-icons/fa"
 
 
-export default function DashUsers (){
+export default function DashComments() {
   const {currentUser} = useSelector((state)=>state.user)
-  const [user,setUser] = useState([])
+  const [comments,setComments] = useState([])
   const [showMore,setShowMore] = useState(true)
   const [showModal,setShowModal] =useState(false)
- const [userIdToDelete,setUserIdToDelete] = useState('')
+ const [commentIdToDelete,setCommentIdToDelete] = useState('')
 
   
   useEffect(()=>{
-     const fetchUsers = async ()=>{
+     const fetchComments = async ()=>{
       try{
-        const res = await authFetch.get(`/user/getusers`)
+        const res = await authFetch.get(`/comment/getComments`)
         if(res.data.status == "success"){
-          setUser(res.data.users)
-          if(res.data.users.length < 9){
+          setComments(res.data.comments)
+          if(res.data.comments.length < 9){
             setShowMore(false)
           }
         }
@@ -34,18 +34,18 @@ export default function DashUsers (){
       }
      }
 if(currentUser.isAdmin){
-  fetchUsers()
+  fetchComments()
 }
 
   },[currentUser._id])
 
 
   const handleShowMore = async ()=>{
-    const startIndex = user.length;
+    const startIndex = comments.length;
     try{
-      const res = await authFetch.get(`/user/getUsers?startIndex=${startIndex}`)
-      setUser((prev)=>[...prev,...res.data.users])
-      if(res.data.users.length < 9){
+      const res = await authFetch.get(`/user/comment`)
+      setComments((prev)=>[...prev,...res.data.comments])
+      if(res.data.comments.length < 9){
         setShowMore(false)
       }
 
@@ -55,11 +55,11 @@ if(currentUser.isAdmin){
   }
 
 
-  const handleDeleteUser = async()=>{
+  const handleDeleteComment = async()=>{
     setShowModal(false)
     try{
-      const res = await authFetch.delete(`/user/delete/${userIdToDelete}`)
-      setUser((prev)=> prev.filter((user) => user._id !== userIdToDelete)) 
+      const res = await authFetch.delete(`/comment/deleteComment/${commentIdToDelete}`)
+      setComments((prev)=> prev.filter((comment) => comment._id !== commentIdToDelete)) 
     }catch(err){
       console.log(err)
     }
@@ -67,47 +67,44 @@ if(currentUser.isAdmin){
   }
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
-      {currentUser.isAdmin && user.length > 0 ? 
+      {currentUser.isAdmin && comments.length > 0 ? 
       <>
       <Table hoverable className='shadow-md'>
         <Table.Head>
-          <Table.HeadCell>Data created</Table.HeadCell>
-          <Table.HeadCell>User Image</Table.HeadCell>
-          <Table.HeadCell>Username</Table.HeadCell>
-          <Table.HeadCell>Email</Table.HeadCell>
-          <Table.HeadCell>Admin</Table.HeadCell>
+          <Table.HeadCell>Data updated</Table.HeadCell>
+          <Table.HeadCell>Comment content</Table.HeadCell>
+          <Table.HeadCell>Numberof likes</Table.HeadCell>
+          <Table.HeadCell>commentId</Table.HeadCell>
+          <Table.HeadCell>userId</Table.HeadCell>
           <Table.HeadCell>Delete</Table.HeadCell>
           
         </Table.Head>
         
-        {user.map((user)=>
-            <Table.Body className='divide-y' key={user._id}>
+        {comments.map((comment)=>
+            <Table.Body className='divide-y' key={comment._id}>
               <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                 
-                  <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
+                  <Table.Cell>{new Date(comment.updatedAt).toLocaleDateString()}</Table.Cell>
                   <Table.Cell>
                     
-                      <img
-                      src={user.profilePicture}
-                      alt={user.username}
-                      className='w-10 rounded-full h-10 object-cover bg-gray-500 font-medium text-gray-900 dark:text-white '
-                      ></img>
+                     {comment.content}
                     
                   </Table.Cell>
                   <Table.Cell>
-                    {user.username}
+                    {comment.numberOfLikes}
 
                   </Table.Cell>
                   <Table.Cell>
-                      {user.email}                     
+                      {comment._id}                     
                   </Table.Cell>
                   <Table.Cell>
-                      {user.isAdmin ? <FaCheck className="text-green-500"/>:<FaTimes className="text-red-500"/>}                     
+                      {comment.userId}                     
                   </Table.Cell>
+                  
                   <Table.Cell>
                       <span onClick={()=>{
                         setShowModal(true)
-                        setUserIdToDelete(user._id)
+                        setCommentIdToDelete(comment._id)
       
 
 
@@ -131,15 +128,15 @@ if(currentUser.isAdmin){
       
       </>
       :
-      <p>You have no users yet</p>}
+      <p>You have no comments yet</p>}
       <Modal show={showModal} onClose={()=>setShowModal(false)} popup size="md">
               <Modal.Header/>
               <Modal.Body>
                  <div className="text-center">
                     <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto'/>
-                    <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>are you sure you want to delete the post</h3>
+                    <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>are you sure you want to delete the comment</h3>
                     <div className="flex justify-center gap-4">
-                        <Button color='failure' onClick={handleDeleteUser}>Yes i`m sure</Button>
+                        <Button color='failure' onClick={handleDeleteComment}>Yes i`m sure</Button>
                         <Button color='gray' onClick={()=>{setShowModal(false)}}>No Cancel</Button>
 
                     </div>
