@@ -10,6 +10,7 @@ import { globalErrorHandler } from "./controllers/errorController.js";
 import postRoutes from "./routes/post.route.js"
 import commentRoutes from "./routes/comment.route.js"
 import paymentRoutes from "./routes/payments.route.js"
+import path from "path"
 dotenv.config()
 process.on("uncaughtException",(err)=>{
     console.log(err.message)
@@ -17,7 +18,7 @@ process.on("uncaughtException",(err)=>{
     process.exit(1)
 })
 
-
+const __dirname = path.resolve();
 const app = express();//running express js
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
@@ -30,6 +31,8 @@ mongoose.connect(process.env.CONN_STR,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 })
+
+
 .then(()=>app.listen(PORT,()=>console.log(`db connectio successful server running at port: ${PORT}`)))
 
 
@@ -39,8 +42,10 @@ app.use("/api/auth",authRoutes)
 app.use("/api/post",postRoutes)
 app.use("/api/comment",commentRoutes)
 app.use("/api/daraja",paymentRoutes)
-
-
+app.use(express.static(path.join(__dirname,'/client/dist')))
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'))
+})
 
 app.use(globalErrorHandler)//global error handler
 
