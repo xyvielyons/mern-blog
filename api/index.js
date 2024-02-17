@@ -22,7 +22,7 @@ const __dirname = path.resolve();
 const app = express();//running express js
 app.use(bodyParser.json({limit:"30mb",extended:true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
-app.use(cors({credentials:true,origin:["http://localhost:5173","https://www.google.com"]}))//cross origin 
+//app.use(cors({credentials:true,origin:["http://localhost:5173","https://www.google.com"]}))//cross origin 
 app.use(cookieParser())//extract cookie from browser
 
 
