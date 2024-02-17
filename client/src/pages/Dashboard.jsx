@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { DashPosts } from '../components/DashPosts'
 import DashUsers  from '../components/DashUsers'
 import DashComments from '../components/DashComments'
+import DashboardComp from '../components/DashboardComp'
 export default function Dashboard() {
   const [tab ,setTab] = useState("")
   const location = useLocation()
@@ -53,6 +54,7 @@ export default function Dashboard() {
       {tab==="posts" && <DashPosts></DashPosts>}
       {tab==="users" && <DashUsers></DashUsers>}
       {tab==="comments" && <DashComments></DashComments>}
+      {tab==="dash" && <DashboardComp></DashboardComp>}
 
     </div>
   )
